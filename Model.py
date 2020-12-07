@@ -35,7 +35,21 @@ def boarding_order(method):
 
     if method == 'random':
         np.random.shuffle(queue)
-    return list(queue)
+        return list(queue)
+    elif method == 'BTF':
+        return list(queue)[::-1]
+    elif method == 'FTB':
+        return list(queue)
+    elif method == "WMA":
+        queue = list(queue)[::-1]
+        windows = []
+        middles = []
+        aisles = []
+        for i in range(0, int(len(queue) / 3)):
+            windows.append(queue[i])
+        np.random.shuffle(windows)
+
+    return queue
 
 def enter_asile(passanger_id):
     aisle[0] = passanger_id
