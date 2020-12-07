@@ -22,14 +22,12 @@ def initialize():
     #random seat assignment
     passangers = {}
     for i in range(rows * columns):
-        seat = random.choice(seats_numeration)
+        seat = seats_numeration[i]
         passangers[i] = [seat,0]    #seat number, event_ongoing (deafault = 0)
-        seats_numeration.remove(seat)
 
     aisle = []
     for i in range(rows):
         aisle.append(-1)
-
     return seats, passangers, aisle
 
 def boarding_order(method):
