@@ -42,13 +42,19 @@ def boarding_order(method):
         return list(queue)
     elif method == "WMA":
         queue = list(queue)[::-1]
-        windows = []
-        middles = []
-        aisles = []
-        for i in range(0, int(len(queue) / 3)):
-            windows.append(queue[i])
-        np.random.shuffle(windows)
+        avg = len(queue) / float(3)
+        out = []
+        last = 0.0
 
+        while last < len(queue):
+            out.append(queue[int(last):int(last + avg)])
+            last += avg
+
+        queue = []
+
+        for i in range(len(out)):
+            random.shuffle(out[i])
+            queue += out[i]
     return queue
 
 def enter_asile(passanger_id):
@@ -107,7 +113,7 @@ def stop_moving_to_column(passanger_id):#4
 #main
 
 seats, passangers, aisle = initialize()
-queue = boarding_order('random')
+queue = boarding_order('WMA')
 current_time = 0
 
 while sum(list(seats.values())) != columns*rows:
