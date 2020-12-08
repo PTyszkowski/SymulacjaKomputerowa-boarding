@@ -30,6 +30,24 @@ def initialize():
         aisle.append(-1)
     return seats, passangers, aisle
 
+
+def divide_and_conquer(queue, howMany):
+    avg = len(queue) / float(howMany)
+    out = []
+    last = 0.0
+
+    while last < len(queue):
+        out.append(queue[int(last):int(last + avg)])
+        last += avg
+
+    queue = []
+
+    for i in range(len(out)):
+        random.shuffle(out[i])
+        queue += out[i]
+    return queue
+
+
 def boarding_order(method):
     queue = np.arange(0,rows * columns, 1)
 
@@ -41,21 +59,14 @@ def boarding_order(method):
     elif method == 'FTB':
         return list(queue)
     elif method == "WMA":
-        queue = list(queue)[::-1]
-        avg = len(queue) / float(3)
-        out = []
-        last = 0.0
+        q_to_func = list(queue)[::-1]
+        queue = divide_and_conquer(q_to_func, 3)
+        return queue
+    elif method == "block":
+        q_to_func = list(queue)
+        queue = divide_and_conquer(q_to_func, 23)
+        return queue
 
-        while last < len(queue):
-            out.append(queue[int(last):int(last + avg)])
-            last += avg
-
-        queue = []
-
-        for i in range(len(out)):
-            random.shuffle(out[i])
-            queue += out[i]
-    return queue
 
 def enter_asile(passanger_id):
     aisle[0] = passanger_id
@@ -113,7 +124,7 @@ def stop_moving_to_column(passanger_id):#4
 #main
 
 seats, passangers, aisle = initialize()
-queue = boarding_order('WMA')
+queue = boarding_order('block')
 current_time = 0
 
 while sum(list(seats.values())) != columns*rows:
