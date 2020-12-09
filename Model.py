@@ -55,17 +55,13 @@ def boarding_order(method):
         np.random.shuffle(queue)
         return list(queue)
     elif method == 'BTF':
-        return list(queue)[::-1]
+        return divide_and_conquer(list(queue)[::-1], rows)
     elif method == 'FTB':
-        return list(queue)
+        return divide_and_conquer(list(queue), rows)
     elif method == "WMA":
-        q_to_func = list(queue)[::-1]
-        queue = divide_and_conquer(q_to_func, 3)
-        return queue
+        return divide_and_conquer(list(queue)[::-1], 3)
     elif method == "block":
-        q_to_func = list(queue)
-        queue = divide_and_conquer(q_to_func, 23)
-        return queue
+        return divide_and_conquer(list(queue)[::-1], 6)
 
 
 def enter_asile(passanger_id):
